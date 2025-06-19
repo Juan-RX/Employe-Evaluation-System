@@ -1,0 +1,36 @@
+:root {
+  --sidebar-width: 80px;
+  --header-height: 110px;
+}
+
+
+
+
+/* Layout general usando grid */
+.layout {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  grid-template-rows: var(--header-height) 1fr;
+  grid-template-areas:
+    "header header"
+    "sidebar content";
+  height: 100vh;
+  overflow: hidden; /* Previene scroll en layout */
+}
+
+app-header {
+  grid-area: header;
+  z-index: 1000;
+}
+
+app-sidebar {
+  grid-area: sidebar;
+  z-index: 999;
+}
+
+/* El contenido principal tiene scroll, no el body */
+.content-area {
+  margin-top: 110px; /* Deja espacio para el header */
+  margin-left: var(--sidebar-width); /* Deja espacio para la sidebar */
+  padding: 20px;
+}

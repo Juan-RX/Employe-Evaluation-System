@@ -1,0 +1,13 @@
+<!-- Layout normal -->
+<div class="layout" *ngIf="showLayout">
+  <app-header [title]="pageTitle"></app-header>
+  <app-sidebar></app-sidebar>
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+
+<!-- Layout para login -->
+<div *ngIf="!showLayout">
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+  --sidebar-width: 80px;
+  --header-height: 60px;
+}
+
+
+#zoom-container {
+  transform-origin: center center;
+  transition: transform 0.3s ease;
+}
+
+
+app-sidebar   { grid-area: sidebar; }
+app-header    { grid-area: header; }
+.content-area {
+  grid-area: content;
+  overflow-y: auto;
+  padding: 20px;
+}
