@@ -1,0 +1,29 @@
+<div 
+  class="modal-backdrop" 
+  *ngIf="isOpen"
+  (click)="onBackdropClick()"
+>
+  <div 
+    class="modal-container"
+    [class]="'modal-' + size"
+    (click)="stopPropagation($event)"
+  >
+    <!-- Header del modal -->
+    <div class="modal-header">
+      <h3 class="modal-title">{{ title }}</h3>
+      <button 
+        *ngIf="showCloseButton"
+        class="modal-close"
+        (click)="close()"
+        type="button"
+      >
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Contenido del modal -->
+    <div class="modal-content">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div> 

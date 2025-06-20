@@ -1,60 +1,67 @@
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- <app-sidebar></app-sidebar>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><!-- <app-sidebar></app-sidebar>
 <app-header [title]="' Gestion | Empleados'"></app-header> -->
 
 <!-- Contenido principal -->
-  <div class="main-content">
-    
-    <div class="crud-container">
-        
-      <div class="crud-header">
-        <div class="search-container">
-          <i class="fas fa-search"></i>
-          <input type="text" placeholder="Buscar empleado...">
-        </div>
-        <button class="btn-add">
-          <i class="fas fa-plus"></i>
-        </button>
+<div class="empleado-page">
+  <app-data-table
+    [columns]="columns"
+    [data]="paginatedEmpleados"
+    [loading]="loading"
+    [showSearch]="true"
+    [showAddButton]="true"
+    [showFilterButton]="true"
+    [addButtonLabel]="'Agregar Empleado'"
+    [searchPlaceholder]="'Buscar empleados...'"
+    [actions]="actions"
+    [totalPages]="totalPages"
+    [currentPage]="currentPage"
+    [totalItems]="empleados.length"
+    [itemsPerPage]="itemsPerPage"
+    (onSearch)="onSearch($event)"
+    (onAdd)="onAdd()"
+    (onFilter)="onFilter()"
+    (onAction)="onAction($event)"
+    (onPageChange)="onPageChange($event)"
+    (onItemsPerPageChange)="onItemsPerPageChange($event)"
+  ></app-data-table>
+
+  <!-- Modal para agregar/editar empleado -->
+  <app-modal
+    [isOpen]="showModal"
+    [title]="selectedEmpleado ? 'Editar Empleado' : 'Agregar Empleado'"
+    (onClose)="onModalClose()"
+  >
+    <app-empleado-form
+      [empleado]="selectedEmpleado"
+      [isEdit]="!!selectedEmpleado"
+      (onSave)="onSaveEmpleado($event)"
+      (onCancel)="onModalClose()"
+    ></app-empleado-form>
+  </app-modal>
+
+  <!-- Modal de Confirmación de Eliminación -->
+  <app-confirmation-modal
+    [isOpen]="showDeleteModal"
+    title="Confirmar Eliminación"
+    [message]="'¿Está seguro de que desea eliminar al empleado ' + (empleadoToDelete?.name_Employee || '') + '?'"
+    (onConfirm)="deleteEmpleado()"
+    (onCancel)="closeDeleteModal()"
+  ></app-confirmation-modal>
+
+  <!-- Modal de filtros avanzados -->
+  <app-modal
+    [isOpen]="showFilterModal"
+    [title]="'Filtros avanzados'"
+    (onClose)="closeFilterModal()"
+  >
+    <div class="modal-content">
+      <label for="filterJob">Filtrar por Puesto:</label>
+      <input id="filterJob" [(ngModel)]="filterJob" placeholder="ID de Puesto" />
+      <div style="margin-top: 18px; display: flex; gap: 12px; justify-content: flex-end;">
+        <button class="btn-add" (click)="applyAdvancedFilter()">Aplicar</button>
+        <button class="btn-cancel" (click)="closeFilterModal()">Cancelar</button>
       </div>
-      
-      <div class="table-container">
-        <table class="employee-table">
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Nombre</th>
-                    <th>Apellidos</th>
-                    <th>Fecha Nacimiento</th>
-                    <th>Inicio Contrato</th>
-                    <th>Puesto</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let emp of empleados">
-                    <td>{{ emp.id_Employee }}</td>
-                    <td>{{ emp.name_Employee }}</td>
-                    <td>{{ emp.lastName_Employee }}</td>
-                    <td>{{ emp.birthDate }}</td>
-                    <td>{{ emp.contract_Start_Date }}</td>
-                    <td>{{ emp.id_Job }}</td>
-                    <td class="actions-cell">
-                    <div class="btn-action btn-edit"><i class="fas fa-edit"></i></div>
-                    <div class="btn-action btn-delete"><i class="fas fa-trash"></i></div>
-                    </td>
-                </tr>
-                </tbody>
-        </table>
-      </div>
-      
-      
-      <div class="pagination">
-        <button class="active">1</button>
-        <button>2</button>
-        <button>3</button>
-        <button><i class="fas fa-chevron-right"></i></button>
-      </div>
-    
     </div>
-  </div>
+  </app-modal>
+</div>
   

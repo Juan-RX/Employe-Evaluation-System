@@ -1,0 +1,18 @@
+<app-modal 
+  [isOpen]="isOpen" 
+  [title]="title" 
+  (onClose)="cancel()" 
+  size="small"
+>
+  <div class="confirmation-content">
+    <p>{{ message }}</p>
+  </div>
+  <div class="confirmation-actions">
+    <button class="btn btn-secondary" (click)="cancel()">
+      {{ cancelButtonText }}
+    </button>
+    <button class="btn" [ngClass]="confirmButtonClass" (click)="confirm()">
+      {{ confirmButtonText }}
+    </button>
+  </div>
+</app-modal> 

@@ -1,143 +1,79 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<div class="evaluacion-container">
-    <div class="evaluacion-card">
-      <div class="card-header">
-        <h2><i class="fas fa-clipboard-check"></i> Formulario de Evaluación de Desempeño</h2>
-      </div>      
-      <form class="evaluacion-form">
-        <div class="form-section"> 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="codigo"><i class="fas fa-id-card"></i> Código de Empleado</label>
-              <input type="text" id="codigo" placeholder="Ingrese el código del empleado">
-            </div>
-            
-            <div class="form-group">
-              <label for="nombre"><i class="fas fa-signature"></i> Nombre</label>
-              <input type="text" id="nombre" disabled placeholder="Nombre del empleado">
-            </div>
-          </div>
-          <div class="form-section">
-          <div class="section-title">
-            <i class="fas fa-file-import"></i>
-            <h3>Importar Evaluaciones desde CSV</h3>
-          </div>
-          
-          <div class="import-section">
-            <p><i class="fas fa-file-csv" style="font-size: 2rem; color: var(--primary-color);"></i></p>
-            <p>Arrastra tu archivo CSV aquí o haz clic para seleccionar</p>
-            <p><small>Formato requerido: Código, Nombre, Puntuaciones (separado por comas)</small></p>
-            
-            <button type="button" class="import-btn">
-              <i class="fas fa-upload"></i> Seleccionar Archivo
-              <input type="file" accept=".csv" style="display: none;">
-            </button>
-            
-            <div class="file-info" style="display: none;">
-              <i class="fas fa-check-circle"></i>
-              <span>archivo_evaluaciones.csv (2.4 KB)</span>
-            </div>
-          </div>
-        </div>
-        </div>
-        
-        <div class="form-section">
-          <div class="section-title">
-            <i class="fas fa-chart-line"></i>
-            <h3>Evaluación de Competencias</h3>
-          </div>
-          
-          <div class="sliders">
-            <div class="col">
-              <div class="slider-container">
-                <div class="slider-header">
-                  <label for="productividad">Productividad</label>
-                  <span class="slider-value">65</span>
-                </div>
-                <input type="range" id="productividad" min="0" max="100" value="65">
-              </div>
-              
-              <div class="slider-container">
-                <div class="slider-header">
-                  <label for="puntualidad">Puntualidad</label>
-                  <span class="slider-value">80</span>
-                </div>
-                <input type="range" id="puntualidad" min="0" max="100" value="80">
-              </div>
-              
-              <div class="slider-container">
-                <div class="slider-header">
-                  <label for="calidad">Calidad del Trabajo</label>
-                  <span class="slider-value">75</span>
-                </div>
-                <input type="range" id="calidad" min="0" max="100" value="75">
-              </div>
-              
-              <div class="slider-container">
-                <div class="slider-header">
-                  <label for="comunicacion">Buena comunicación</label>
-                  <span class="slider-value">70</span>
-                </div>
-                <input type="range" id="comunicacion" min="0" max="100" value="70">
-              </div>
-            </div>
-            
-            <div class="col">
-              <div class="slider-container">
-                <div class="slider-header">
-                  <label for="aprender">Disposición a aprender</label>
-                  <span class="slider-value">85</span>
-                </div>
-                <input type="range" id="aprender" min="0" max="100" value="85">
-              </div>
-              
-              <div class="slider-container">
-                <div class="slider-header">
-                  <label for="honestidad">Honestidad</label>
-                  <span class="slider-value">90</span>
-                </div>
-                <input type="range" id="honestidad" min="0" max="100" value="90">
-              </div>
-              
-              <div class="slider-container">
-                <div class="slider-header">
-                  <label for="iniciativa">Iniciativa</label>
-                  <span class="slider-value">60</span>
-                </div>
-                <input type="range" id="iniciativa" min="0" max="100" value="60">
-              </div>
-              
-              <div class="slider-container">
-                <div class="slider-header">
-                  <label for="equipo">Integración con el equipo</label>
-                  <span class="slider-value">75</span>
-                </div>
-                <input type="range" id="equipo" min="0" max="100" value="75">
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="form-section">
-          <div class="section-title">
-            <i class="fas fa-comment-dots"></i>
-            <h3>Comentarios Adicionales</h3>
-          </div>
-          
-          <div class="form-group">
-            <label for="comentarios"><i class="fas fa-edit"></i> Observaciones y Comentarios</label>
-            <textarea id="comentarios" placeholder="Escribe tus comentarios y observaciones sobre el desempeño del empleado..."></textarea>
-          </div>
-        </div>
-        
-        <div class="form-buttons">
-        <button type="button" class="btn cancel">
-            <i class="fas fa-times"></i> Cancelar
-        </button>
-        <button type="submit" class="btn save">
-            <i class="fas fa-save"></i> Guardar Evaluación
-        </button>
-        </div>
-      </form>
+<div class="container">
+  <div class="header">
+    <h1>Formulario de Evaluación de Desempeño</h1>
+    <p class="subtitle">Busque un empleado por su ID para comenzar la evaluación.</p>
+  </div>
+
+  <div class="employee-search">
+    <div class="form-group form-group-id">
+      <label for="codigo">Código del Empleado</label>
+      <div class="input-wrapper">
+        <input 
+          type="text" 
+          id="codigo" 
+          [formControl]="idEmpleadoControl"
+          placeholder="Ingrese el ID y espere..."
+          [class.loading]="isLoading"
+        >
+        <div *ngIf="isLoading" class="spinner"></div>
+      </div>
+    </div>
+    <div class="form-group form-group-name">
+      <label for="nombre">Nombre del Empleado</label>
+      <input 
+        type="text" 
+        id="nombre"
+        [value]="nombreEmpleado"
+        placeholder="Nombre se autocompletará"
+        readonly
+      >
     </div>
   </div>
+
+  <div *ngIf="errorMensaje" class="error-message">
+    <i class="fas fa-exclamation-circle"></i> {{ errorMensaje }}
+  </div>
+
+  <div class="evaluation-form" [class.disabled]="!nombreEmpleado">
+    <div class="section-title">Competencias</div>
+    
+    <div class="competencies-list">
+      <div *ngFor="let item of competencias" class="competency-item">
+        <label [for]="item[0]">{{ item[1] }}</label>
+        <div class="slider-container">
+          <input 
+            type="range" 
+            [id]="item[0]" 
+            min="0" 
+            max="100" 
+            [(ngModel)]="valores[item[0]]" 
+            class="slider"
+            [disabled]="!nombreEmpleado"
+          >
+          <span class="rating-value">{{ valores[item[0]] }}</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="section-title">Comentarios Adicionales</div>
+    <textarea 
+      id="comentarios" 
+      rows="4" 
+      [(ngModel)]="comentarios" 
+      placeholder="Escriba aquí sus comentarios..."
+      [disabled]="!nombreEmpleado"
+    ></textarea>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">Limpiar</button>
+      <button 
+        type="button" 
+        class="btn btn-primary" 
+        (click)="onSubmit()" 
+        [disabled]="!nombreEmpleado || isLoading"
+      >
+        Guardar Evaluación
+      </button>
+    </div>
+  </div>
+</div>

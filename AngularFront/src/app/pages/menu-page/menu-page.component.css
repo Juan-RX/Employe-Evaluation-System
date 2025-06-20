@@ -1,65 +1,90 @@
 :host {
   display: block;
-  height: calc(100vh - 60px); /* Resta altura del header */
+  min-height: calc(100vh - var(--header-height, 70px));
+  background: linear-gradient(135deg, #ffffff 3%, #e6e6e6 100%);
 }
 
 .main-container {
   display: flex;
-  height: 100%;
-  margin-left: var(--sidebar-width);
-  padding: 30px;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - var(--header-height, 70px));
+  margin-left: var(--sidebar-width, 250px);
+  padding: 40px 20px;
+  box-sizing: border-box;
 }
 
 .content-section {
+  background: rgba(255, 255, 255, 1);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(44, 62, 80, 0.12);
+  padding: 48px 40px 40px 40px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  max-width: 600px;
   width: 100%;
-  gap: 40px;
+  gap: 36px;
+  z-index: 1;
 }
 
 .text-content {
-  max-width: 800px;
+  max-width: 520px;
   text-align: center;
   margin: 0 auto;
 }
 
 .text-content p {
-  font-size: 22px;
-  line-height: 2.0;
-  margin-bottom: 20px;
-  color: #333;
+  font-size: 1.25rem;
+  line-height: 1.8;
+  margin-bottom: 18px;
+  color: #2c3e50;
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
 .image-content {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 .centered-logo {
-  width: 240px;
+  width: 160px;
+  max-width: 60vw;
   height: auto;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  display: block;
+  margin: 0 auto;
+  filter: drop-shadow(0 4px 16px rgba(44,62,80,0.10));
+  transition: transform 0.2s;
+}
+
+.centered-logo:hover {
+  transform: scale(1.05) rotate(-2deg);
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .main-container {
     margin-left: 0;
-    padding: 20px;
+    padding: 24px 8px;
   }
-  
   .content-section {
-    gap: 30px;
+    padding: 32px 12px 24px 12px;
+    max-width: 98vw;
   }
-  
+}
+
+@media (max-width: 600px) {
+  .content-section {
+    padding: 18px 4vw 16px 4vw;
+    gap: 18px;
+  }
   .text-content p {
-    font-size: 16px;
+    font-size: 1rem;
   }
-  
   .centered-logo {
-    width: 200px;
+    width: 110px;
   }
 }

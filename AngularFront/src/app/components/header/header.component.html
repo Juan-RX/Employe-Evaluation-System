@@ -5,8 +5,17 @@
 
   <div class="spacer"></div>
 
-  <div class="user-icon" title="usuario">
+  <div class="user-icon" title="usuario" (click)="onUserIconClick()">
     <i class="fa-solid fa-user-circle"></i>
   </div>
 
+  <div class="logout-modal-backdrop" *ngIf="showLogoutModal" (click)="closeLogoutModal()">
+    <div class="logout-modal" (click)="$event.stopPropagation()">
+      <h3>¿Cerrar sesión?</h3>
+      <div class="logout-modal-actions">
+        <button class="btn-logout" (click)="logout()">Salir</button>
+        <button class="btn-cancel" (click)="closeLogoutModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
 </header>

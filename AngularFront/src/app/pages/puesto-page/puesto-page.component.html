@@ -1,45 +1,51 @@
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <!-- <app-sidebar></app-sidebar>
 <app-header [title]="'Gestion | Puestos'"></app-header> -->
 
 <!-- Contenido principal -->
-<div class="main-content">
-  <div class="crud-container">
-    <div class="crud-header">
-      <div class="search-container">
-        <i class="fas fa-search"></i>
-        <input type="text" placeholder="Buscar puesto...">
-      </div>
-      <button class="btn-add">
-        <i class="fas fa-plus"></i>
-      </button>
-    </div>
-    <div class="table-container">
-      <table class="employee-table">
-        <thead>
-          <tr>
-            <th>Código Puesto</th>
-            <th>Puesto</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let p of puestos">
-            <td>{{ p.id_Job }}</td>
-            <td>{{ p.name_Job }}</td>
-            <td class="actions-cell">
-              <div class="btn-action btn-edit"><i class="fas fa-edit"></i></div>
-              <div class="btn-action btn-delete"><i class="fas fa-trash"></i></div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="pagination">
-      <button class="active">1</button>
-      <button>2</button>
-      <button>3</button>
-      <button><i class="fas fa-chevron-right"></i></button>
-    </div>
-  </div>
+<div class="puesto-page">
+  <app-data-table
+    [columns]="columns"
+    [data]="paginatedPuestos"
+    [loading]="loading"
+    [showSearch]="true"
+    [showAddButton]="true"
+    [showFilterButton]="true"
+    [addButtonLabel]="'Agregar Puesto'"
+    [searchPlaceholder]="'Buscar puestos...'"
+    [actions]="actions"
+    [totalPages]="totalPages"
+    [currentPage]="currentPage"
+    [totalItems]="puestos.length"
+    [itemsPerPage]="itemsPerPage"
+    (onSearch)="onSearch($event)"
+    (onAdd)="onAdd()"
+    (onFilter)="onFilter()"
+    (onAction)="onAction($event)"
+    (onPageChange)="onPageChange($event)"
+    (onItemsPerPageChange)="onItemsPerPageChange($event)"
+  ></app-data-table>
+
+  <!-- Modal para agregar/editar puesto -->
+  <app-modal
+    [isOpen]="showModal"
+    [title]="selectedPuesto ? 'Editar Puesto' : 'Agregar Puesto'"
+    (onClose)="onModalClose()"
+  >
+    <app-puesto-form
+      [puesto]="selectedPuesto"
+      [isEdit]="!!selectedPuesto"
+      (onSave)="onSavePuesto($event)"
+      (onCancel)="onModalClose()"
+    ></app-puesto-form>
+  </app-modal>
+
+  <!-- Modal de Confirmación de Eliminación -->
+  <app-confirmation-modal
+    [isOpen]="showDeleteModal"
+    title="Confirmar Eliminación"
+    [message]="'¿Está seguro de que desea eliminar el puesto ' + (puestoToDelete?.name_Job || '') + '?'"
+    (onConfirm)="deletePuesto()"
+    (onCancel)="closeDeleteModal()"
+  ></app-confirmation-modal>
 </div>

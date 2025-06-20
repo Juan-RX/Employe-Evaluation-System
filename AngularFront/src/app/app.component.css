@@ -34,3 +34,11 @@ app-sidebar {
   margin-left: var(--sidebar-width); /* Deja espacio para la sidebar */
   padding: 20px;
 }
+
+.content {
+  grid-area: content;
+  overflow-y: auto;
+  padding: 20px;
+  padding-top: var(--header-height);
+  min-height: 0;
+}

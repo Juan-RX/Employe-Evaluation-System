@@ -1,0 +1,129 @@
+<div class="data-table-container">
+  <!-- Header con búsqueda y botón agregar -->
+  <div class="table-header" *ngIf="showSearch || showAddButton || showFilterButton">
+    <div class="search-container" *ngIf="showSearch">
+      <i class="fas fa-search"></i>
+      <input 
+        type="text" 
+        [placeholder]="searchPlaceholder"
+        [(ngModel)]="searchTerm"
+        (input)="onSearchChange()"
+      >
+    </div>
+    
+    <div class="header-actions">
+      <button 
+        class="btn-filter" 
+        *ngIf="showFilterButton"
+        (click)="onFilterClick()"
+        title="Filtros avanzados"
+      >
+        <i class="fas fa-filter"></i>
+      </button>
+      
+      <button 
+        class="btn-add" 
+        *ngIf="showAddButton"
+        (click)="onAddClick()"
+      >
+        <i class="fas fa-plus"></i>
+        {{ addButtonLabel }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading spinner -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando datos...</p>
+  </div>
+
+  <!-- Tabla de datos -->
+  <div class="table-container" *ngIf="!loading">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th *ngFor="let column of columns">
+            {{ column.label }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of data">
+          <td *ngFor="let column of columns">
+            <!-- Columna de acciones -->
+            <div class="actions-cell" *ngIf="column.type === 'actions'">
+              <button 
+                *ngFor="let action of actions"
+                class="btn-action"
+                [class]="'btn-' + action.action"
+                [title]="action.label"
+                (click)="onActionClick(action.action, item)"
+              >
+                <i [class]="action.icon"></i>
+              </button>
+            </div>
+            
+            <!-- Columna normal -->
+            <span *ngIf="column.type !== 'actions'">
+              {{ item[column.key] }}
+            </span>
+          </td>
+        </tr>
+        
+        <!-- Mensaje cuando no hay datos -->
+        <tr *ngIf="data.length === 0">
+          <td [attr.colspan]="columns.length" class="no-data">
+            <i class="fas fa-inbox"></i>
+            <p>No hay datos para mostrar</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Paginación -->
+  <div class="pagination-container-simple" *ngIf="showPagination">
+    <div class="pagination-controls">
+      <div class="page-size-selector">
+        <label for="pageSize">Elementos por página:</label>
+        <select 
+          id="pageSize" 
+          [(ngModel)]="itemsPerPage"
+          (ngModelChange)="onPageSizeChange($event)"
+          class="page-size-select"
+        >
+          <option *ngFor="let size of pageSizeOptions" [value]="size">
+            {{ size }}
+          </option>
+        </select>
+      </div>
+      <div class="pagination" *ngIf="totalPages > 1">
+        <button 
+          class="page-btn"
+          [disabled]="currentPage === 1"
+          (click)="onPageClick(currentPage - 1)"
+          title="Página anterior"
+        >
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button 
+          *ngFor="let page of getPageNumbers()"
+          class="page-btn"
+          [class.active]="page === currentPage"
+          (click)="onPageClick(page)"
+        >
+          {{ page }}
+        </button>
+        <button 
+          class="page-btn"
+          [disabled]="currentPage === totalPages"
+          (click)="onPageClick(currentPage + 1)"
+          title="Página siguiente"
+        >
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div> 

@@ -1,0 +1,38 @@
+<form [formGroup]="puestoForm" (ngSubmit)="onSubmit()" class="puesto-form">
+  <div class="form-group">
+    <label for="name_Job">Nombre del Puesto *</label>
+    <input 
+      type="text" 
+      id="name_Job"
+      formControlName="name_Job"
+      [class.invalid]="isFieldInvalid('name_Job')"
+      placeholder="Ingrese el nombre del puesto"
+      maxlength="100"
+    >
+    <span class="error-message" *ngIf="getFieldError('name_Job')">
+      {{ getFieldError('name_Job') }}
+    </span>
+    <div class="char-counter" *ngIf="puestoForm.get('name_Job')?.value">
+      {{ puestoForm.get('name_Job')?.value?.length }}/100 caracteres
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button 
+      type="button" 
+      class="btn btn-secondary"
+      (click)="onCancelClick()"
+      [disabled]="loading"
+    >
+      Cancelar
+    </button>
+    <button 
+      type="submit" 
+      class="btn btn-primary"
+      [disabled]="puestoForm.invalid || loading"
+    >
+      <i class="fas fa-spinner fa-spin" *ngIf="loading"></i>
+      {{ isEdit ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </div>
+</form> 

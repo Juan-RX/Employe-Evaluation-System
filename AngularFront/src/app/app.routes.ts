@@ -6,6 +6,7 @@ import { EmpleadoPageComponent } from './pages/empleado-page/empleado-page.compo
 import { EvaluacionComponent } from './pages/evaluacion/evaluacion.component';
 import { PuestoPageComponent } from './pages/puesto-page/puesto-page.component';
 import { ResultadosPageComponent } from './pages/resultados-page/resultados-page.component';
+import { AuthGuard } from './Services/AuthGuard';
 
 export const routes: Routes = [
   {
@@ -20,26 +21,30 @@ export const routes: Routes = [
   {
     path: 'home',
     component: MenuPageComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'empleado',
     component: EmpleadoPageComponent,
-
+    canActivate: [AuthGuard]
   },
 
   {
     path: 'puesto',
     component: PuestoPageComponent,
+    canActivate: [AuthGuard]
   },
 
   {
     path: 'evaluacion',
     component: EvaluacionComponent,
+    canActivate: [AuthGuard]
   },
 
   {
     path: 'resultados',
     component: ResultadosPageComponent,
+    canActivate: [AuthGuard]
   },
 
   {

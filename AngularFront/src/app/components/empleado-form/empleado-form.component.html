@@ -1,0 +1,103 @@
+<form [formGroup]="empleadoForm" (ngSubmit)="onSubmit()" class="empleado-form">
+  <div class="form-row">
+    <div class="form-group">
+      <label for="name_Employee">Nombre *</label>
+      <input 
+        type="text" 
+        id="name_Employee"
+        formControlName="name_Employee"
+        [class.invalid]="isFieldInvalid('name_Employee')"
+        placeholder="Ingrese el nombre"
+      >
+      <span class="error-message" *ngIf="getFieldError('name_Employee')">
+        {{ getFieldError('name_Employee') }}
+      </span>
+    </div>
+
+    <div class="form-group">
+      <label for="lastName_Employee">Apellido *</label>
+      <input 
+        type="text" 
+        id="lastName_Employee"
+        formControlName="lastName_Employee"
+        [class.invalid]="isFieldInvalid('lastName_Employee')"
+        placeholder="Ingrese el apellido"
+      >
+      <span class="error-message" *ngIf="getFieldError('lastName_Employee')">
+        {{ getFieldError('lastName_Employee') }}
+      </span>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="birthDate">Fecha de Nacimiento *</label>
+      <input 
+        #birthDateInput
+        type="text" 
+        placeholder="dd/mm/aaaa"
+        (focus)="birthDateInput.type='date'"
+        (blur)="!birthDateInput.value && (birthDateInput.type='text')"
+        id="birthDate"
+        formControlName="birthDate"
+        [class.invalid]="isFieldInvalid('birthDate')"
+      >
+      <span class="error-message" *ngIf="getFieldError('birthDate')">
+        {{ getFieldError('birthDate') }}
+      </span>
+    </div>
+
+    <div class="form-group">
+      <label for="contract_Start_Date">Fecha de Inicio de Contrato *</label>
+      <input 
+        #contractDateInput
+        type="text" 
+        placeholder="dd/mm/aaaa"
+        (focus)="contractDateInput.type='date'"
+        (blur)="!contractDateInput.value && (contractDateInput.type='text')"
+        id="contract_Start_Date"
+        formControlName="contract_Start_Date"
+        [class.invalid]="isFieldInvalid('contract_Start_Date')"
+      >
+      <span class="error-message" *ngIf="getFieldError('contract_Start_Date')">
+        {{ getFieldError('contract_Start_Date') }}
+      </span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="id_Job">Puesto *</label>
+    <select 
+      id="id_Job"
+      formControlName="id_Job"
+      [class.invalid]="isFieldInvalid('id_Job')"
+    >
+      <option value="">Seleccione un puesto</option>
+      <option *ngFor="let puesto of puestos" [value]="puesto.id_Job">
+        {{ puesto.name_Job }}
+      </option>
+    </select>
+    <span class="error-message" *ngIf="getFieldError('id_Job')">
+      {{ getFieldError('id_Job') }}
+    </span>
+  </div>
+
+  <div class="form-actions">
+    <button 
+      type="button" 
+      class="btn btn-secondary"
+      (click)="onCancelClick()"
+      [disabled]="loading"
+    >
+      Cancelar
+    </button>
+    <button 
+      type="submit" 
+      class="btn btn-primary"
+      [disabled]="empleadoForm.invalid || loading"
+    >
+      <i class="fas fa-spinner fa-spin" *ngIf="loading"></i>
+      {{ isEdit ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </div>
+</form> 
