@@ -82,3 +82,4 @@ C:\Users\JuanPabloOrtizMoreno\OneDrive - Nezter Solutions\Escritorio\Examen\ApiB
 C:\Users\JuanPabloOrtizMoreno\OneDrive - Nezter Solutions\Escritorio\Examen\ApiBack\ApiBack\obj\Debug\net8.0\ApiBack.pdb
 C:\Users\JuanPabloOrtizMoreno\OneDrive - Nezter Solutions\Escritorio\Examen\ApiBack\ApiBack\obj\Debug\net8.0\ApiBack.genruntimeconfig.cache
 C:\Users\JuanPabloOrtizMoreno\OneDrive - Nezter Solutions\Escritorio\Examen\ApiBack\ApiBack\obj\Debug\net8.0\ref\ApiBack.dll
+C:\Users\JuanPabloOrtizMoreno\OneDrive - Nezter Solutions\Escritorio\Examen\ApiBack\ApiBack\obj\Debug\net8.0\ApiBack.sourcelink.json

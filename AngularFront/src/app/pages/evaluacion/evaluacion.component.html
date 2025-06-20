@@ -1,7 +1,4 @@
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- 
-<app-sidebar></app-sidebar>
-<app-header [title]="'Evaluación | Empleado'"></app-header> -->
 
 <!-- Contenido principal -->
   <div class="main-content">
@@ -30,64 +27,16 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>0198</td>
-              <td>Juan</td>
-              <td class="actions-cell">
-                <div class="btn-action btn-delete"><i class="fas fa-file"></i></div>
-                <div class="btn-action btn-edit"><i class="fas fa-edit"></i></div>
-                <div class="btn-action btn-delete"><i class="fas fa-trash"></i></div>
-              </td>
+            <tr *ngFor="let emp of empleados">
+                <td>{{ emp.id_Employee }}</td>
+                <td>{{ emp.name_Employee }} {{ emp.lastName_Employee }}</td>
+                <td class="actions-cell">
+                <button class="btn-action btn-eval" (click)="abrirEvaluacion(emp)">
+                    <i class="fas fa-file"></i>
+                </button>
+                </td>
             </tr>
-            <tr>
-              <td>0199</td>
-              <td>Edgar</td>
-              <td class="actions-cell">
-                <div class="btn-action btn-edit"><i class="fas fa-edit"></i></div>
-                <div class="btn-action btn-delete"><i class="fas fa-trash"></i></div>
-              </td>
-            </tr>
-            <tr>
-              <td>0200</td>
-              <td>Javier</td>
-              <td class="actions-cell">
-                <div class="btn-action btn-edit"><i class="fas fa-edit"></i></div>
-                <div class="btn-action btn-delete"><i class="fas fa-trash"></i></div>
-              </td>
-            </tr>
-            <tr>
-              <td>0201</td>
-              <td>José</td>
-              <td class="actions-cell">
-                <div class="btn-action btn-edit"><i class="fas fa-edit"></i></div>
-                <div class="btn-action btn-delete"><i class="fas fa-trash"></i></div>
-              </td>
-            </tr>
-            <tr>
-              <td>0202</td>
-              <td>Andrés</td>
-              <td class="actions-cell">
-                <div class="btn-action btn-edit"><i class="fas fa-edit"></i></div>
-                <div class="btn-action btn-delete"><i class="fas fa-trash"></i></div>
-              </td>
-            </tr>
-            <tr>
-              <td>0203</td>
-              <td>Gilberto</td>
-              <td class="actions-cell">
-                <div class="btn-action btn-edit"><i class="fas fa-edit"></i></div>
-                <div class="btn-action btn-delete"><i class="fas fa-trash"></i></div>
-              </td>
-            </tr>
-            <tr>
-              <td>0204</td>
-              <td>Sergio</td>
-              <td class="actions-cell">
-                <div class="btn-action btn-edit"><i class="fas fa-edit"></i></div>
-                <div class="btn-action btn-delete"><i class="fas fa-trash"></i></div>
-              </td>
-            </tr>
-          </tbody>
+        </tbody>
         </table>
       </div>
       

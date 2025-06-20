@@ -31,92 +31,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>001</td>
-                    <td>Juan</td>
-                    <td>Ortiz Moreno</td>
-                    <td>25/04/2003</td>
-                    <td>10/05/2025</td>
-                    <td>Conserje</td>
+                <tr *ngFor="let emp of empleados">
+                    <td>{{ emp.id_Employee }}</td>
+                    <td>{{ emp.name_Employee }}</td>
+                    <td>{{ emp.lastName_Employee }}</td>
+                    <td>{{ emp.birthDate }}</td>
+                    <td>{{ emp.contract_Start_Date }}</td>
+                    <td>{{ emp.id_Job }}</td>
                     <td class="actions-cell">
                     <div class="btn-action btn-edit"><i class="fas fa-edit"></i></div>
                     <div class="btn-action btn-delete"><i class="fas fa-trash"></i></div>
-                </td>
-
-                <tr>
-                    <td>001</td>
-                    <td>Juan</td>
-                    <td>Ortiz Moreno</td>
-                    <td>25/04/2003</td>
-                    <td>10/05/2025</td>
-                    <td>Conserje</td>
-                    <td class="actions-cell">
-                    <div class="btn-action btn-edit"><i class="fas fa-edit"></i></div>
-                    <div class="btn-action btn-delete"><i class="fas fa-trash"></i></div>
-                </td>
-
-                <tr>
-                    <td>001</td>
-                    <td>Juan</td>
-                    <td>Ortiz Moreno</td>
-                    <td>25/04/2003</td>
-                    <td>10/05/2025</td>
-                    <td>Conserje</td>
-                    <td class="actions-cell">
-                    <div class="btn-action btn-edit"><i class="fas fa-edit"></i></div>
-                    <div class="btn-action btn-delete"><i class="fas fa-trash"></i></div>
-                </td>
-
-                <tr>
-                    <td>001</td>
-                    <td>Juan</td>
-                    <td>Ortiz Moreno</td>
-                    <td>25/04/2003</td>
-                    <td>10/05/2025</td>
-                    <td>Conserje</td>
-                    <td class="actions-cell">
-                    <div class="btn-action btn-edit"><i class="fas fa-edit"></i></div>
-                    <div class="btn-action btn-delete"><i class="fas fa-trash"></i></div>
-                </td>
-
-                <tr>
-                    <td>001</td>
-                    <td>Juan</td>
-                    <td>Ortiz Moreno</td>
-                    <td>25/04/2003</td>
-                    <td>10/05/2025</td>
-                    <td>Conserje</td>
-                    <td class="actions-cell">
-                    <div class="btn-action btn-edit"><i class="fas fa-edit"></i></div>
-                    <div class="btn-action btn-delete"><i class="fas fa-trash"></i></div>
-                </td>
-
-                <tr>
-                    <td>001</td>
-                    <td>Juan</td>
-                    <td>Ortiz Moreno</td>
-                    <td>25/04/2003</td>
-                    <td>10/05/2025</td>
-                    <td>Conserje</td>
-                    <td class="actions-cell">
-                    <div class="btn-action btn-edit"><i class="fas fa-edit"></i></div>
-                    <div class="btn-action btn-delete"><i class="fas fa-trash"></i></div>
-                </td>
-
-                <tr>
-                    <td>001</td>
-                    <td>Juan</td>
-                    <td>Ortiz Moreno</td>
-                    <td>25/04/2003</td>
-                    <td>10/05/2025</td>
-                    <td>Conserje</td>
-                    <td class="actions-cell">
-                    <div class="btn-action btn-edit"><i class="fas fa-edit"></i></div>
-                    <div class="btn-action btn-delete"><i class="fas fa-trash"></i></div>
-                </td>
-
+                    </td>
                 </tr>
-            </tbody>
+                </tbody>
         </table>
       </div>
       
