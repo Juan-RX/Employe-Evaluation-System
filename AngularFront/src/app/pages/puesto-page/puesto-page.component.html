@@ -66,4 +66,15 @@
       </div>
     </div>
   </app-modal>
+
+  <!-- Modal de error -->
+  <app-modal
+    [isOpen]="showDeleteErrorModal"
+    title="No se puede eliminar"
+    (onClose)="closeDeleteErrorModal()"
+  >
+    <div class="modal-content">
+      <p>{{ deleteErrorMessage }}</p>
+    </div>
+  </app-modal>
 </div>

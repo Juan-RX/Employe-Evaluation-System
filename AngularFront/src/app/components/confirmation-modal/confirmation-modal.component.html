@@ -11,7 +11,8 @@
     <button class="btn btn-secondary" (click)="cancel()">
       {{ cancelButtonText }}
     </button>
-    <button class="btn" [ngClass]="confirmButtonClass" (click)="confirm()">
+    <button class="btn" [ngClass]="confirmButtonClass" (click)="confirm()" [disabled]="loading">
+      <i class="fas fa-spinner fa-spin" *ngIf="loading"></i>
       {{ confirmButtonText }}
     </button>
   </div>

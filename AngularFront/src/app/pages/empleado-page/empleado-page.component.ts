@@ -99,7 +99,7 @@ export class EmpleadoPageComponent implements OnInit {
   applySearch() {
     const term = this.searchTerm.trim().toLowerCase();
     if (!term) {
-      this.filteredEmpleados = this.empleados.map(emp => ({ ...emp, nombrePuesto: this.getNombrePuesto(emp.id_Job) }));
+      this.filteredEmpleados = this.empleados;
     } else {
       this.filteredEmpleados = this.empleados.filter(emp => {
         const nombre = emp.name_Employee.toLowerCase();
@@ -116,7 +116,7 @@ export class EmpleadoPageComponent implements OnInit {
           String(emp.contract_Start_Date).toLowerCase().includes(term) ||
           this.getNombrePuesto(emp.id_Job).toLowerCase().includes(term)
         );
-      }).map(emp => ({ ...emp, nombrePuesto: this.getNombrePuesto(emp.id_Job) }));
+      });
     }
     this.updatePagination();
   }
@@ -144,7 +144,7 @@ export class EmpleadoPageComponent implements OnInit {
       const contractDateMatch = this.filterContractDate ? String(emp.contract_Start_Date).startsWith(this.filterContractDate) : true;
       const puestoMatch = this.filterJob ? this.getNombrePuesto(emp.id_Job).toLowerCase().includes(this.filterJob.toLowerCase()) : true;
       return nombreMatch && apellidoMatch && birthDateMatch && contractDateMatch && puestoMatch;
-    }).map(emp => ({ ...emp, nombrePuesto: this.getNombrePuesto(emp.id_Job) }));
+    });
     this.updatePagination();
     this.showFilterModal = false;
     this.cdr.markForCheck();
@@ -175,7 +175,6 @@ export class EmpleadoPageComponent implements OnInit {
 
     this.empleadoService.delete(this.empleadoToDelete.id_Employee).subscribe({
       next: () => {
-        console.log('Empleado eliminado correctamente');
         this.loadEmpleados();
         this.closeDeleteModal();
       },
@@ -201,7 +200,6 @@ export class EmpleadoPageComponent implements OnInit {
       // Actualizar empleado existente
       this.empleadoService.update(empleado).subscribe({
         next: () => {
-          console.log('Empleado actualizado correctamente');
           this.onModalClose();
           this.loadEmpleados();
         },
@@ -213,7 +211,6 @@ export class EmpleadoPageComponent implements OnInit {
       // Crear nuevo empleado
       this.empleadoService.insert(empleado).subscribe({
         next: () => {
-          console.log('Empleado creado correctamente');
           this.onModalClose();
           this.loadEmpleados();
         },
@@ -231,22 +228,25 @@ export class EmpleadoPageComponent implements OnInit {
 
   onItemsPerPageChange(newSize: number) {
     this.itemsPerPage = newSize;
-    this.currentPage = 1; // Volver a la primera página
+    this.currentPage = 1; // Siempre volver a la primera página
     this.updatePagination();
     this.cdr.markForCheck();
   }
 
   updatePagination() {
-    this.totalPages = Math.ceil(this.filteredEmpleados.length / this.itemsPerPage);
-    // Asegurar que la página actual sea válida
+    this.totalPages = Math.ceil(this.filteredEmpleados.length / this.itemsPerPage) || 1;
+    // Si la página actual es mayor que el total, vuelve a la última válida
     if (this.currentPage > this.totalPages) {
-      this.currentPage = this.totalPages || 1;
+      this.currentPage = this.totalPages;
     }
   }
 
   get paginatedEmpleados(): Empleado[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    return this.filteredEmpleados.slice(startIndex, endIndex);
+    return this.filteredEmpleados.slice(startIndex, endIndex).map(emp => ({
+      ...emp,
+      nombrePuesto: this.getNombrePuesto(emp.id_Job)
+    }));
   }
 }

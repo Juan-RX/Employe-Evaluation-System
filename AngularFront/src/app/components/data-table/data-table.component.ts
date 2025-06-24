@@ -37,7 +37,7 @@ export class DataTableComponent {
   @Input() actions: TableAction[] = [];
   @Input() totalItems: number = 0;
   @Input() itemsPerPage: number = 10;
-  @Input() pageSizeOptions: number[] = [5, 10, 25, 50];
+  @Input() pageSizeOptions: number[] = [10];
 
   @Output() onSearch = new EventEmitter<string>();
   @Output() onAdd = new EventEmitter<void>();
@@ -70,8 +70,7 @@ export class DataTableComponent {
     }
   }
 
-  onPageSizeChange(event: any) {
-    const newSize = parseInt(event.target.value);
+  onPageSizeChange(newSize: number) {
     this.onItemsPerPageChange.emit(newSize);
   }
 
@@ -102,5 +101,9 @@ export class DataTableComponent {
 
   get showPagination(): boolean {
     return this.totalItems > 0;
+  }
+
+  trackById(index: number, item: any): any {
+    return item.id_Employee || item.id || index;
   }
 } 

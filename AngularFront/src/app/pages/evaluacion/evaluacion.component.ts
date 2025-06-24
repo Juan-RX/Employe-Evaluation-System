@@ -9,11 +9,12 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { EvaluacionService, Evaluacion } from '../../Services/Evaluacion.Service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-evaluacion',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, DataTableComponent, ModalComponent, EmpleadoFormComponent, ConfirmationModalComponent],
+  imports: [CommonModule, HttpClientModule, DataTableComponent, ModalComponent, EmpleadoFormComponent, ConfirmationModalComponent, FormsModule],
   templateUrl: './evaluacion.component.html',
   styleUrl: './evaluacion.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,6 +41,13 @@ export class EvaluacionComponent implements OnInit {
   empleadosEvaluados: any[] = [];
   selectedEvaluacion: Evaluacion | null = null;
   showEvaluacionModal = false;
+  showFilterModal = false;
+  filterName: string = '';
+  filterLastName: string = '';
+  filterCode: string = '';
+  filterDateFrom: string = '';
+  filterDateTo: string = '';
+  selectedEvaluacionToDelete: Evaluacion | null = null;
 
   columns: TableColumn[] = [
     { key: 'evaluation_Date', label: 'Fecha Evaluación', type: 'date' },
@@ -51,7 +59,6 @@ export class EvaluacionComponent implements OnInit {
 
   actions: TableAction[] = [
     { icon: 'fas fa-eye', label: 'Ver', action: 'view' },
-    { icon: 'fas fa-edit', label: 'Editar', action: 'edit' },
     { icon: 'fas fa-trash', label: 'Borrar', action: 'delete' }
   ];
 
@@ -63,8 +70,14 @@ export class EvaluacionComponent implements OnInit {
     this.loading = true;
     this.evaluacionService.getAll().subscribe({
       next: (data) => {
-        this.evaluaciones = data;
-        this.empleadosEvaluados = data;
+        // Ordenar por fecha descendente
+        const sorted = data.sort((a, b) => {
+          const dateA = a.evaluation_Date ? new Date(a.evaluation_Date).getTime() : 0;
+          const dateB = b.evaluation_Date ? new Date(b.evaluation_Date).getTime() : 0;
+          return dateB - dateA;
+        });
+        this.evaluaciones = sorted;
+        this.empleadosEvaluados = sorted;
         this.filteredEmpleados = [...this.empleadosEvaluados];
         this.updatePagination();
         this.loading = false;
@@ -108,7 +121,7 @@ export class EvaluacionComponent implements OnInit {
   }
 
   onFilter() {
-    // Implementar filtros avanzados
+    this.openFilterModal();
   }
 
   onAdd() {
@@ -119,40 +132,31 @@ export class EvaluacionComponent implements OnInit {
     const evaluacion = event.item;
     switch (event.action) {
       case 'view':
-        // Navegar a la gráfica de la evaluación seleccionada
         this.router.navigate(['/graphic-page', evaluacion.id_Evaluation]);
         break;
-      case 'edit':
-        // Navegar a la edición de la evaluación seleccionada
-        this.router.navigate(['/resultados'], { queryParams: { id: evaluacion.id_Evaluation } });
-        break;
       case 'delete':
-        // Eliminar la evaluación seleccionada
-        this.evaluacionService.delete(evaluacion.id_Evaluation!).subscribe({
-          next: () => this.loadEvaluaciones(),
-          error: (err) => console.error('Error eliminando evaluación:', err)
-        });
+        this.selectedEvaluacionToDelete = evaluacion;
+        this.showDeleteModal = true;
         break;
     }
   }
 
-  deleteEmpleado() {
-    if (!this.empleadoToDelete) return;
-
-    this.empleadoService.delete(this.empleadoToDelete.id_Employee).subscribe({
+  deleteEvaluacion() {
+    if (!this.selectedEvaluacionToDelete) return;
+    this.evaluacionService.delete(this.selectedEvaluacionToDelete.id_Evaluation!).subscribe({
       next: () => {
         this.loadEvaluaciones();
         this.closeDeleteModal();
       },
-      error: (error: any) => {
-        console.error('Error eliminando empleado:', error);
+      error: (err) => {
+        console.error('Error eliminando evaluación:', err);
         this.closeDeleteModal();
       }
     });
   }
 
   closeDeleteModal() {
-    this.empleadoToDelete = null;
+    this.selectedEvaluacionToDelete = null;
     this.showDeleteModal = false;
   }
 
@@ -203,8 +207,47 @@ export class EvaluacionComponent implements OnInit {
   }
 
   get paginatedEmpleados(): any[] {
+    const sorted = this.filteredEmpleados.slice().sort((a, b) => {
+      const dateA = a.evaluation_Date ? new Date(a.evaluation_Date).getTime() : 0;
+      const dateB = b.evaluation_Date ? new Date(b.evaluation_Date).getTime() : 0;
+      return dateB - dateA; // recientes primero
+    });
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    return this.filteredEmpleados.slice(startIndex, endIndex);
+    return sorted.slice(startIndex, endIndex);
+  }
+
+  openFilterModal() {
+    this.showFilterModal = true;
+  }
+  closeFilterModal() {
+    this.showFilterModal = false;
+  }
+  clearAdvancedFilter() {
+    this.filterName = '';
+    this.filterLastName = '';
+    this.filterCode = '';
+    this.filterDateFrom = '';
+    this.filterDateTo = '';
+    this.applyAdvancedFilter();
+  }
+  applyAdvancedFilter() {
+    this.filteredEmpleados = this.empleadosEvaluados.filter(emp => {
+      const nameMatch = this.filterName ? (emp.name_Employee || '').toLowerCase().includes(this.filterName.toLowerCase()) : true;
+      const lastNameMatch = this.filterLastName ? (emp.lastName_Employee || '').toLowerCase().includes(this.filterLastName.toLowerCase()) : true;
+      const codeMatch = this.filterCode ? String(emp.id_employee || emp.id_Employee || '').includes(this.filterCode) : true;
+      let dateMatch = true;
+      if (this.filterDateFrom) {
+        dateMatch = dateMatch && emp.evaluation_Date && (new Date(emp.evaluation_Date) >= new Date(this.filterDateFrom));
+      }
+      if (this.filterDateTo) {
+        dateMatch = dateMatch && emp.evaluation_Date && (new Date(emp.evaluation_Date) <= new Date(this.filterDateTo));
+      }
+      return nameMatch && lastNameMatch && codeMatch && dateMatch;
+    });
+    this.currentPage = 1;
+    this.updatePagination();
+    this.showFilterModal = false;
+    this.cdr.markForCheck();
   }
 }

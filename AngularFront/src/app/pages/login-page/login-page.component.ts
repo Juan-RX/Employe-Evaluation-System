@@ -1,6 +1,6 @@
 // src/app/login-page/login-page.component.ts
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../Services/Auth.Service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
 export class LoginPageComponent {
   loginForm: FormGroup;
   errorMsg = '';
+  triedLogin = false;
 
   constructor(
     private fb: FormBuilder,
@@ -23,26 +24,37 @@ export class LoginPageComponent {
     private router: Router
   ) {
     this.loginForm = this.fb.group({
-      username: [''],
-      userPassword: ['']
+      username: ['', Validators.required],
+      userPassword: ['', Validators.required]
+    });
+
+    // Limpiar error al escribir
+    this.loginForm.valueChanges.subscribe(() => {
+      if (this.triedLogin) this.errorMsg = '';
     });
   }
 
   login() {
-    if (this.loginForm.invalid) return;
+    this.triedLogin = true;
+    if (this.loginForm.invalid) {
+      this.errorMsg = 'Debes ingresar usuario y contraseña.';
+      return;
+    }
 
     this.errorMsg = '';
     const creds = this.loginForm.value;
     this.authService.login(creds).subscribe({
       next: () => {
-        // Al recibir token, redirigimos
-        this.router.navigate(['/home']); // o la ruta que quieras
+        this.router.navigate(['/home']);
       },
       error: err => {
-        // Manejo de error
-        this.errorMsg = err.status === 401
-          ? 'Usuario o contraseña incorrectos'
-          : 'Error al conectar con el servidor';
+        if (err.status === 401) {
+          this.errorMsg = 'Usuario o contraseña incorrectos.';
+        } else if (err.status === 0) {
+          this.errorMsg = 'No se pudo conectar con el servidor. Verifica tu conexión.';
+        } else {
+          this.errorMsg = 'Ocurrió un error inesperado. Intenta de nuevo.';
+        }
       }
     });
   }

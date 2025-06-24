@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl, FormsModule } from '@angular/forms';
 import { EmpleadoService, Empleado } from '../../Services/Empleado.Service';
@@ -6,7 +6,6 @@ import { EvaluacionService } from '../../Services/Evaluacion.Service';
 import { Subject } from 'rxjs';
 import { debounceTime, switchMap, takeUntil, catchError, tap, filter } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { DataTableComponent } from '../../components/data-table/data-table.component';
 import type { Evaluacion } from '../../Services/Evaluacion.Service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RadarChartComponent } from '../../components/radar-chart.component';
@@ -27,7 +26,7 @@ type ClaveComp = keyof typeof Competencia;
 @Component({
   selector: 'app-resultados-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, DataTableComponent, RadarChartComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RadarChartComponent],
   templateUrl: './resultados-page.component.html',
   styleUrl: './resultados-page.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -38,6 +37,7 @@ export class ResultadosPageComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private cdr = inject(ChangeDetectorRef);
 
   // Modelo del formulario
   idEmpleadoControl = new FormControl('', { nonNullable: true });
@@ -178,7 +178,7 @@ export class ResultadosPageComponent implements OnInit, OnDestroy {
           const mappedEv = {
             ...ev,
             id_Evaluation: ev.id_Evaluation ?? (ev as any)['id_evaluation'],
-            evaluation_Date: ev.evaluation_Date ? new Date(ev.evaluation_Date) : undefined
+            evaluation_Date: ev.evaluation_Date // Mantener como string ISO
           };
           return mappedEv;
         });
@@ -221,7 +221,7 @@ export class ResultadosPageComponent implements OnInit, OnDestroy {
       initiative: this.valores.Iniciativa,
       teamwork: this.valores.Equipo,
       comments: this.comentarios,
-      evaluation_Date: new Date().toISOString().slice(0, 10)
+      evaluation_Date: new Date().toISOString()
     };
     if (this.isEditMode && this.idEvaluacionEdit) {
       (evaluacion as any).id_Evaluation = this.idEvaluacionEdit;
@@ -240,7 +240,7 @@ export class ResultadosPageComponent implements OnInit, OnDestroy {
         next: () => {
           this.errorMensaje = '';
           alert('¡Evaluación guardada exitosamente!');
-          this.onCancel();
+          this.router.navigate(['/evaluacion']);
         },
         error: (err) => {
           this.errorMensaje = 'Error al guardar la evaluación.';
@@ -270,6 +270,7 @@ export class ResultadosPageComponent implements OnInit, OnDestroy {
     if (!id || !/^[0-9]+$/.test(id)) {
       this.isLoading = false;
       this.errorMensaje = 'Ingrese un ID de empleado válido.';
+      this.cdr.markForCheck();
       return;
     }
     this.empleadoService.getById(Number(id)).subscribe({
@@ -284,12 +285,14 @@ export class ResultadosPageComponent implements OnInit, OnDestroy {
           this.empleadoValido = null;
         }
         this.isLoading = false;
+        this.cdr.markForCheck();
       },
-      error: () => {
+      error: (err) => {
         this.errorMensaje = 'Empleado no encontrado o error en la solicitud.';
         this.nombreEmpleado = '';
         this.empleadoValido = null;
         this.isLoading = false;
+        this.cdr.markForCheck();
       }
     });
   }

@@ -33,6 +33,15 @@
             <label><b>Comentarios</b></label>
             <textarea [value]="evaluacion.comments" readonly class="comentarios-area"></textarea>
           </div>
+          <div class="desempeno-panel" [ngClass]="claseDesempeno">
+            <div class="desempeno-porcentaje">
+              <span class="desempeno-label">Desempeño global:</span>
+              <span class="desempeno-numero" [ngClass]="claseDesempeno">{{ promedioDesempeno }}%</span>
+            </div>
+            <div class="desempeno-mensaje" [ngClass]="claseDesempeno">
+              {{ mensajeDesempeno }}
+            </div>
+          </div>
         </div>
       </div>
     </div>

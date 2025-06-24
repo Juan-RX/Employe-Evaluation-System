@@ -77,4 +77,42 @@ export class GraphicPageComponent implements OnInit {
   onSave() {
     // Implementar guardado en modo edición
   }
+
+  // Calcula el promedio de desempeño
+  get promedioDesempeno(): number {
+    if (!this.evaluacion) return 0;
+    const valores = [
+      Number(this.evaluacion.productivity) || 0,
+      Number(this.evaluacion.punctuality) || 0,
+      Number(this.evaluacion.work_quality) || 0,
+      Number(this.evaluacion.communication) || 0,
+      Number(this.evaluacion.willingness_to_learn) || 0,
+      Number(this.evaluacion.honesty) || 0,
+      Number(this.evaluacion.initiative) || 0,
+      Number(this.evaluacion.teamwork) || 0
+    ];
+    const suma = valores.reduce((acc, val) => acc + val, 0);
+    return Math.round(suma / valores.length);
+  }
+
+  // Devuelve el mensaje de desempeño según el promedio
+  get mensajeDesempeno(): string {
+    const p = this.promedioDesempeno;
+    if (p <= 20) return 'Desempeño muy bajo. Requiere atención inmediata.';
+    if (p <= 40) return 'Desempeño bajo. Hay áreas importantes a mejorar.';
+    if (p <= 60) return 'Desempeño regular. Puede mejorar con seguimiento.';
+    if (p <= 80) return 'Buen desempeño. Sigue así y busca superarte.';
+    if (p < 100) return 'Desempeño excelente. ¡Sigue con ese esfuerzo!';
+    return '¡Desempeño perfecto! Eres un ejemplo a seguir.';
+  }
+
+  get claseDesempeno(): string {
+    const p = this.promedioDesempeno;
+    if (p <= 20) return 'msg-rojo';
+    if (p <= 40) return 'msg-naranja';
+    if (p <= 60) return 'msg-amarillo';
+    if (p <= 80) return 'msg-verde';
+    if (p < 100) return 'msg-azul';
+    return 'msg-dorado';
+  }
 } 

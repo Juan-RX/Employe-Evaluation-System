@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>Inicio de Sesión</title>
 </head>
 
@@ -13,7 +14,7 @@
     <h1>Bienvenido!</h1>
     <p>Llene los campos para iniciar sesión en el sistema</p>
 
-    <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <form [formGroup]="loginForm">
       <div class="field-group">
         <label for="username">Usuario</label>
         <input
@@ -36,12 +37,12 @@
 
       <div class="divider"></div>
 
-      <button type="submit" [disabled]="loginForm.invalid">Iniciar Sesión</button>
+      <button type="button" (click)="login()">Iniciar Sesión</button>
     </form>
 
     <!-- Mensaje de error -->
-    <div *ngIf="errorMsg" class="error">
-      {{ errorMsg }}
+    <div *ngIf="triedLogin && errorMsg" class="error-msg">
+      <i class="fas fa-exclamation-circle"></i> {{ errorMsg }}
     </div>
 
     <!-- Logo -->

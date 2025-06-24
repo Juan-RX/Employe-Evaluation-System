@@ -39,6 +39,9 @@
 
 .input-wrapper {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .employee-search input {
@@ -75,7 +78,11 @@
 
 .evaluation-form {
   border-top: 1px solid #ccc;
-  padding-top: 1.5rem;
+  padding-top: 2rem;
+  margin-top: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
   transition: opacity 0.3s ease;
 }
 
@@ -86,9 +93,10 @@
 
 .section-title {
   font-size: 1.2rem;
-  font-weight: 600;
-  margin: 1.5rem 0;
+  font-weight: 700;
+  margin: 2rem 0 1rem 0;
   color: #333;
+  letter-spacing: 0.5px;
 }
 
 .competencies-list {
@@ -99,8 +107,12 @@
 .competency-item {
   display: flex;
   flex-direction: column;
-  padding: 1rem 0;
+  padding: 1.5rem 0;
   border-bottom: 1px solid #e0e0e0;
+  background: #fafbfc;
+  border-radius: 8px;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
 }
 
 .competency-item:first-child {
@@ -109,8 +121,9 @@
 
 .competency-item label {
   margin-bottom: 0.75rem;
-  font-weight: normal;
-  color: #000;
+  font-weight: 600;
+  color: #222;
+  font-size: 1.05rem;
 }
 
 .slider-container {
@@ -122,6 +135,25 @@
 .slider {
   width: 100%;
   flex: 1;
+  accent-color: #007bff;
+  height: 6px;
+  border-radius: 4px;
+  background: #e0e0e0;
+}
+
+.rating-input {
+  font-size: 1rem;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  width: 60px;
+  text-align: center;
+  background: #fff;
+  transition: border 0.2s;
+}
+.rating-input:focus {
+  border: 1.5px solid #007bff;
+  outline: none;
 }
 
 .rating-value {
@@ -134,32 +166,47 @@ textarea {
   width: 100%;
   padding: 0.75rem 1rem;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 1rem;
   resize: vertical;
+  background: #fafbfc;
+  margin-bottom: 1.5rem;
 }
 
 .form-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 1rem;
+  gap: 1.5rem;
   margin-top: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid #e0e0e0;
 }
 
 .btn {
-  padding: 0.75rem 1.5rem;
+  padding: 0.9rem 2rem;
   border: none;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
   cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: background 0.2s, box-shadow 0.2s;
 }
 
 .btn-primary { background-color: #007bff; color: white; }
 .btn-primary:disabled { background-color: #a0c7e4; cursor: not-allowed; }
 .btn-secondary { background-color: #6c757d; color: white; }
+.btn:hover { box-shadow: 0 2px 8px rgba(0,123,255,0.08); }
+
+.success-message {
+  margin-bottom: 1.5rem;
+  color: #28a745;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+}
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
@@ -210,26 +257,23 @@ textarea {
 
 .btn-buscar {
   margin-left: 0.5rem;
-  padding: 0.5rem 1.2rem;
-  background: #007bff;
+  padding: 0.7rem 2rem;
+  background: #28a745;
   color: #fff;
   border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 1rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.1rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 4px rgba(40,167,69,0.08);
+  margin-top: 0;
+}
+.btn-buscar:hover {
+  background: #218838;
+  box-shadow: 0 2px 8px rgba(40,167,69,0.15);
 }
 .btn-buscar:disabled {
-  background: #a0c7e4;
+  background: #a0e4b0;
   cursor: not-allowed;
-}
-.success-message {
-  margin-bottom: 1.5rem;
-  color: #28a745;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.1rem;
 }

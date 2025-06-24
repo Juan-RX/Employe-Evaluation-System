@@ -34,6 +34,8 @@ export class PuestoPageComponent implements OnInit {
   filterId: string = '';
   filterName: string = '';
   searchTerm: string = '';
+  showDeleteErrorModal = false;
+  deleteErrorMessage = '';
 
   // Configuración de la tabla
   columns: TableColumn[] = [
@@ -62,7 +64,6 @@ export class PuestoPageComponent implements OnInit {
         this.cdr.markForCheck();
       },
       error: (error: any) => {
-        console.error('Error cargando puestos:', error);
         this.loading = false;
         this.cdr.markForCheck();
       }
@@ -138,16 +139,15 @@ export class PuestoPageComponent implements OnInit {
 
   deletePuesto() {
     if (!this.puestoToDelete) return;
-
-    this.puestoService.delete(this.puestoToDelete.id_Job).subscribe({
+    const id = this.puestoToDelete.id_Job;
+    this.closeDeleteModal();
+    this.puestoService.delete(id).subscribe({
       next: () => {
-        console.log('Puesto eliminado correctamente');
         this.loadPuestos();
-        this.closeDeleteModal();
       },
       error: (error: any) => {
-        console.error('Error eliminando puesto:', error);
-        this.closeDeleteModal();
+        this.deleteErrorMessage = error?.error?.message || 'No se puede eliminar el puesto porque hay empleados asociados a él.';
+        this.showDeleteErrorModal = true;
       }
     });
   }
@@ -155,6 +155,13 @@ export class PuestoPageComponent implements OnInit {
   closeDeleteModal() {
     this.puestoToDelete = null;
     this.showDeleteModal = false;
+  }
+
+  closeDeleteErrorModal() {
+    this.showDeleteErrorModal = false;
+    this.deleteErrorMessage = '';
+    this.closeDeleteModal();
+    this.loadPuestos();
   }
 
   onModalClose() {
@@ -167,24 +174,20 @@ export class PuestoPageComponent implements OnInit {
       // Actualizar puesto existente
       this.puestoService.update(puesto).subscribe({
         next: () => {
-          console.log('Puesto actualizado correctamente');
           this.onModalClose();
           this.loadPuestos();
         },
         error: (error: any) => {
-          console.error('Error actualizando puesto:', error);
         }
       });
     } else {
       // Crear nuevo puesto
       this.puestoService.insert(puesto).subscribe({
         next: () => {
-          console.log('Puesto creado correctamente');
           this.onModalClose();
           this.loadPuestos();
         },
         error: (error: any) => {
-          console.error('Error creando puesto:', error);
         }
       });
     }

@@ -48,8 +48,21 @@ namespace ApiBack.Controllers
         [HttpPost("Delete")]
         public async Task<IActionResult> Delete([FromBody] int id_Job)
         {
-            var result = await _repo.DeleteAsync(id_Job);
-            return Ok(result);
+            try
+            {
+                var result = await _repo.DeleteAsync(id_Job);
+                return Ok(result);
+            }
+            catch (Microsoft.Data.SqlClient.SqlException ex)
+            {
+                if (ex.Number == 50000) // Mensaje personalizado desde SQL Server
+                    return BadRequest(new { message = ex.Message });
+                return StatusCode(500, new { message = "Error interno del servidor." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
         }
     }
 } 

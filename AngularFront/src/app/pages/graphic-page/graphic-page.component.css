@@ -78,16 +78,86 @@
   color: #333;
   margin-bottom: 0.5rem;
 }
+.desempeno-panel {
+  margin-top: 1.5rem;
+  padding: 1.2rem 1.5rem;
+  background: #f6fff6;
+  border: 2px solid #28a745;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(40,167,69,0.07);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7rem;
+  transition: background 0.2s, border 0.2s;
+}
+.desempeno-panel.msg-rojo {
+  background: #fff6f6;
+  border-color: #d32f2f;
+}
+.desempeno-panel.msg-naranja {
+  background: #fff8ed;
+  border-color: #ff9800;
+}
+.desempeno-panel.msg-amarillo {
+  background: #fffde7;
+  border-color: #fbc02d;
+}
+.desempeno-panel.msg-verde {
+  background: #f6fff6;
+  border-color: #388e3c;
+}
+.desempeno-panel.msg-azul {
+  background: #f3f6ff;
+  border-color: #1a237e;
+}
+.desempeno-panel.msg-dorado {
+  background: #fffbe6;
+  border-color: #bfa100;
+  box-shadow: 0 0 12px #ffe066;
+}
+.desempeno-porcentaje {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #218838;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.desempeno-label {
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 600;
+}
+.desempeno-numero {
+  font-size: 1.5rem;
+  color: #28a745;
+  font-weight: 800;
+  margin-left: 0.5rem;
+}
+.desempeno-numero.msg-rojo { color: #d32f2f; }
+.desempeno-numero.msg-naranja { color: #ff9800; }
+.desempeno-numero.msg-amarillo { color: #fbc02d; }
+.desempeno-numero.msg-verde { color: #388e3c; }
+.desempeno-numero.msg-azul { color: #1a237e; }
+.desempeno-numero.msg-dorado { color: #bfa100; text-shadow: 0 0 6px #ffe066; }
+.desempeno-mensaje {
+  font-size: 1.1rem;
+  color: #155724;
+  font-weight: 500;
+  margin-top: 0.3rem;
+}
 .comentarios-area {
   width: 100%;
   min-height: 80px;
+  max-height: 80px;
   background: #f4f4f4;
   border-radius: 6px;
   border: 1px solid #ccc;
   padding: 0.5rem;
-  font-size: 1rem;
-  color: #333;
+  margin-bottom: 0.5rem;
   resize: none;
+  overflow-y: auto;
 }
 .error-msg {
   color: #b00;
@@ -146,4 +216,29 @@
     min-width: unset;
     max-width: 100%;
   }
+}
+.msg-rojo {
+  color: #d32f2f;
+  font-weight: 700;
+}
+.msg-naranja {
+  color: #ff9800;
+  font-weight: 700;
+}
+.msg-amarillo {
+  color: #fbc02d;
+  font-weight: 700;
+}
+.msg-verde {
+  color: #388e3c;
+  font-weight: 700;
+}
+.msg-azul {
+  color: #1a237e;
+  font-weight: 700;
+}
+.msg-dorado {
+  color: #bfa100;
+  font-weight: 700;
+  text-shadow: 0 0 6px #ffe066;
 } 

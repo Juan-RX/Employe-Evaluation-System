@@ -43,8 +43,8 @@
   <app-confirmation-modal
     [isOpen]="showDeleteModal"
     title="Confirmar Eliminación"
-    [message]="'¿Está seguro de que desea eliminar al empleado ' + (empleadoToDelete?.name_Employee || '') + '?'"
-    (onConfirm)="deleteEmpleado()"
+    [message]="'¿Está seguro de que desea eliminar la evaluación de ' + (selectedEvaluacionToDelete?.name_Employee || '') + ' del ' + (selectedEvaluacionToDelete?.evaluation_Date | date:'yyyy-MM-dd') + '?'"
+    (onConfirm)="deleteEvaluacion()"
     (onCancel)="closeDeleteModal()"
   ></app-confirmation-modal>
 
@@ -71,6 +71,39 @@
     </div>
     <div *ngIf="!selectedEvaluacion">
       <p>No hay evaluación disponible para este empleado.</p>
+    </div>
+  </app-modal>
+
+  <app-modal
+    [isOpen]="showFilterModal"
+    [title]="'Búsqueda Avanzada'"
+    (onClose)="closeFilterModal()"
+  >
+    <div class="advanced-filter-form">
+      <div class="filter-row">
+        <label>Nombre:</label>
+        <input type="text" [(ngModel)]="filterName" placeholder="Nombre del empleado" />
+      </div>
+      <div class="filter-row">
+        <label>Apellido:</label>
+        <input type="text" [(ngModel)]="filterLastName" placeholder="Apellido del empleado" />
+      </div>
+      <div class="filter-row">
+        <label>Código:</label>
+        <input type="text" [(ngModel)]="filterCode" placeholder="Código de empleado" />
+      </div>
+      <div class="filter-row">
+        <label>Fecha desde:</label>
+        <input type="date" [(ngModel)]="filterDateFrom" />
+      </div>
+      <div class="filter-row">
+        <label>Fecha hasta:</label>
+        <input type="date" [(ngModel)]="filterDateTo" />
+      </div>
+      <div class="filter-actions">
+        <button class="btn btn-primary" (click)="applyAdvancedFilter()">Aplicar filtros</button>
+        <button class="btn btn-secondary" (click)="clearAdvancedFilter()">Limpiar</button>
+      </div>
     </div>
   </app-modal>
 </div>
