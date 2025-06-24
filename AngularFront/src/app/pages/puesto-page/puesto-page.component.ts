@@ -6,11 +6,12 @@ import { PuestoFormComponent } from '../../components/puesto-form/puesto-form.co
 import { ConfirmationModalComponent } from '../../components/confirmation-modal/confirmation-modal.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-puesto-page',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, DataTableComponent, ModalComponent, PuestoFormComponent, ConfirmationModalComponent],
+  imports: [CommonModule, HttpClientModule, DataTableComponent, ModalComponent, PuestoFormComponent, ConfirmationModalComponent, FormsModule],
   templateUrl: './puesto-page.component.html',
   styleUrl: './puesto-page.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,6 +21,7 @@ export class PuestoPageComponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
 
   puestos: Puesto[] = [];
+  filteredPuestos: Puesto[] = [];
   loading = false;
   showModal = false;
   selectedPuesto: Puesto | null = null;
@@ -28,6 +30,10 @@ export class PuestoPageComponent implements OnInit {
   currentPage = 1;
   totalPages = 1;
   itemsPerPage = 10;
+  showFilterModal = false;
+  filterId: string = '';
+  filterName: string = '';
+  searchTerm: string = '';
 
   // Configuración de la tabla
   columns: TableColumn[] = [
@@ -50,6 +56,7 @@ export class PuestoPageComponent implements OnInit {
     this.puestoService.getAll().subscribe({
       next: (data) => {
         this.puestos = data;
+        this.applySearch();
         this.updatePagination();
         this.loading = false;
         this.cdr.markForCheck();
@@ -62,22 +69,51 @@ export class PuestoPageComponent implements OnInit {
     });
   }
 
+  applySearch() {
+    const term = this.searchTerm.trim().toLowerCase();
+    if (!term) {
+      this.filteredPuestos = [...this.puestos];
+    } else {
+      this.filteredPuestos = this.puestos.filter(puesto =>
+        String(puesto.id_Job).toLowerCase().includes(term) ||
+        puesto.name_Job.toLowerCase().includes(term)
+      );
+    }
+    this.updatePagination();
+  }
+
+  onSearch(searchTerm: string) {
+    this.searchTerm = searchTerm;
+    this.applySearch();
+    this.currentPage = 1;
+    this.cdr.markForCheck();
+  }
+
+  onFilter() {
+    this.showFilterModal = true;
+  }
+
+  closeFilterModal() {
+    this.showFilterModal = false;
+  }
+
+  applyAdvancedFilter() {
+    this.filteredPuestos = this.puestos.filter(puesto => {
+      const idMatch = this.filterId ? String(puesto.id_Job).includes(this.filterId) : true;
+      const nameMatch = this.filterName ? puesto.name_Job.toLowerCase().includes(this.filterName.toLowerCase()) : true;
+      return idMatch && nameMatch;
+    });
+    this.updatePagination();
+    this.showFilterModal = false;
+    this.cdr.markForCheck();
+  }
+
   updatePagination() {
-    this.totalPages = Math.ceil(this.puestos.length / this.itemsPerPage);
+    this.totalPages = Math.ceil(this.filteredPuestos.length / this.itemsPerPage);
     // Asegurar que la página actual sea válida
     if (this.currentPage > this.totalPages) {
       this.currentPage = this.totalPages || 1;
     }
-  }
-
-  onSearch(searchTerm: string) {
-    // Implementar búsqueda
-    console.log('Buscando:', searchTerm);
-  }
-
-  onFilter() {
-    // Implementar filtros avanzados
-    console.log('Aplicando filtros...');
   }
 
   onAdd() {
@@ -169,6 +205,6 @@ export class PuestoPageComponent implements OnInit {
   get paginatedPuestos(): Puesto[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    return this.puestos.slice(startIndex, endIndex);
+    return this.filteredPuestos.slice(startIndex, endIndex);
   }
 }

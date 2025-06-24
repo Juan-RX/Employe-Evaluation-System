@@ -55,8 +55,16 @@
     (onClose)="closeFilterModal()"
   >
     <div class="modal-content">
-      <label for="filterJob">Filtrar por Puesto:</label>
-      <input id="filterJob" [(ngModel)]="filterJob" placeholder="ID de Puesto" />
+      <label for="filterName">Nombre:</label>
+      <input id="filterName" [(ngModel)]="filterName" placeholder="Nombre" />
+      <label for="filterLastName">Apellidos:</label>
+      <input id="filterLastName" [(ngModel)]="filterLastName" placeholder="Apellidos" />
+      <label for="filterBirthDate">Fecha de Nacimiento:</label>
+      <input id="filterBirthDate" [(ngModel)]="filterBirthDate" placeholder="AAAA-MM-DD" />
+      <label for="filterContractDate">Fecha de Contrato:</label>
+      <input id="filterContractDate" [(ngModel)]="filterContractDate" placeholder="AAAA-MM-DD" />
+      <label for="filterJob">Puesto:</label>
+      <input id="filterJob" [(ngModel)]="filterJob" placeholder="Nombre del Puesto" />
       <div style="margin-top: 18px; display: flex; gap: 12px; justify-content: flex-end;">
         <button class="btn-add" (click)="applyAdvancedFilter()">Aplicar</button>
         <button class="btn-cancel" (click)="closeFilterModal()">Cancelar</button>

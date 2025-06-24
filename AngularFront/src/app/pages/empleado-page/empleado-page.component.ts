@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { EmpleadoService, Empleado } from '../../Services/Empleado.Service';
+import { PuestoService, Puesto } from '../../Services/Puesto.Service';
 import { DataTableComponent, TableColumn, TableAction } from '../../components/data-table/data-table.component';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { EmpleadoFormComponent } from '../../components/empleado-form/empleado-form.component';
@@ -18,9 +19,11 @@ import { FormsModule } from '@angular/forms';
 })
 export class EmpleadoPageComponent implements OnInit {
   private empleadoService = inject(EmpleadoService);
+  private puestoService = inject(PuestoService);
   private cdr = inject(ChangeDetectorRef);
 
   empleados: Empleado[] = [];
+  puestos: Puesto[] = [];
   loading = false;
   showModal = false;
   selectedEmpleado: Empleado | null = null;
@@ -33,6 +36,10 @@ export class EmpleadoPageComponent implements OnInit {
   filteredEmpleados: Empleado[] = [];
   showFilterModal = false;
   filterJob: string = '';
+  filterName: string = '';
+  filterLastName: string = '';
+  filterBirthDate: string = '';
+  filterContractDate: string = '';
 
   // Configuración de la tabla
   columns: TableColumn[] = [
@@ -41,7 +48,7 @@ export class EmpleadoPageComponent implements OnInit {
     { key: 'lastName_Employee', label: 'Apellidos', type: 'text' },
     { key: 'birthDate', label: 'Fecha Nacimiento', type: 'date' },
     { key: 'contract_Start_Date', label: 'Inicio Contrato', type: 'date' },
-    { key: 'id_Job', label: 'Puesto', type: 'text' },
+    { key: 'nombrePuesto', label: 'Puesto', type: 'text' },
     { key: 'actions', label: 'Acciones', type: 'actions' }
   ];
 
@@ -51,6 +58,7 @@ export class EmpleadoPageComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    this.loadPuestos();
     this.loadEmpleados();
   }
 
@@ -72,17 +80,43 @@ export class EmpleadoPageComponent implements OnInit {
     });
   }
 
+  loadPuestos() {
+    this.puestoService.getAll().subscribe({
+      next: (data) => {
+        this.puestos = data;
+        this.cdr.markForCheck();
+      },
+      error: (error: any) => {
+        console.error('Error cargando puestos:', error);
+      }
+    });
+  }
+
+  getNombrePuesto(id: number): string {
+    return this.puestos.find(p => p.id_Job === id)?.name_Job || '';
+  }
+
   applySearch() {
     const term = this.searchTerm.trim().toLowerCase();
     if (!term) {
-      this.filteredEmpleados = [...this.empleados];
+      this.filteredEmpleados = this.empleados.map(emp => ({ ...emp, nombrePuesto: this.getNombrePuesto(emp.id_Job) }));
     } else {
-      this.filteredEmpleados = this.empleados.filter(emp =>
-        Object.keys(emp).some(key =>
-          ['id_Employee', 'name_Employee', 'lastName_Employee', 'birthDate', 'contract_Start_Date', 'id_Job'].includes(key) &&
-          String((emp as any)[key]).toLowerCase().includes(term)
-        )
-      );
+      this.filteredEmpleados = this.empleados.filter(emp => {
+        const nombre = emp.name_Employee.toLowerCase();
+        const apellidos = emp.lastName_Employee.toLowerCase();
+        const nombreCompleto = `${nombre} ${apellidos}`;
+        const nombreCompletoInvertido = `${apellidos} ${nombre}`;
+        return (
+          nombre.includes(term) ||
+          apellidos.includes(term) ||
+          nombreCompleto.includes(term) ||
+          nombreCompletoInvertido.includes(term) ||
+          String(emp.id_Employee).toLowerCase().includes(term) ||
+          String(emp.birthDate).toLowerCase().includes(term) ||
+          String(emp.contract_Start_Date).toLowerCase().includes(term) ||
+          this.getNombrePuesto(emp.id_Job).toLowerCase().includes(term)
+        );
+      }).map(emp => ({ ...emp, nombrePuesto: this.getNombrePuesto(emp.id_Job) }));
     }
     this.updatePagination();
   }
@@ -103,11 +137,14 @@ export class EmpleadoPageComponent implements OnInit {
   }
 
   applyAdvancedFilter() {
-    if (this.filterJob) {
-      this.filteredEmpleados = this.empleados.filter(emp => String((emp as any)['id_Job']) === this.filterJob);
-    } else {
-      this.applySearch();
-    }
+    this.filteredEmpleados = this.empleados.filter(emp => {
+      const nombreMatch = this.filterName ? emp.name_Employee.toLowerCase().includes(this.filterName.toLowerCase()) : true;
+      const apellidoMatch = this.filterLastName ? emp.lastName_Employee.toLowerCase().includes(this.filterLastName.toLowerCase()) : true;
+      const birthDateMatch = this.filterBirthDate ? String(emp.birthDate).startsWith(this.filterBirthDate) : true;
+      const contractDateMatch = this.filterContractDate ? String(emp.contract_Start_Date).startsWith(this.filterContractDate) : true;
+      const puestoMatch = this.filterJob ? this.getNombrePuesto(emp.id_Job).toLowerCase().includes(this.filterJob.toLowerCase()) : true;
+      return nombreMatch && apellidoMatch && birthDateMatch && contractDateMatch && puestoMatch;
+    }).map(emp => ({ ...emp, nombrePuesto: this.getNombrePuesto(emp.id_Job) }));
     this.updatePagination();
     this.showFilterModal = false;
     this.cdr.markForCheck();

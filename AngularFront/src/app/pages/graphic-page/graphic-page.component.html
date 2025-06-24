@@ -1,0 +1,43 @@
+<div class="graphic-page-container">
+  <h1 class="titulo">Resultados de la Evaluación</h1>
+
+  <div *ngIf="loading" class="loading">Cargando...</div>
+  <div *ngIf="!loading && evaluacion">
+    <div class="panel-resultado-horizontal">
+      <!-- Contenedor de la gráfica -->
+      <div class="card grafica-card">
+        <div class="grafica-panel">
+          <dx-polar-chart
+            [dataSource]="radarData"
+            title="Competencias evaluadas"
+            [commonSeriesSettings]="{ type: 'area' }"
+            argumentField="arg"
+            style="width: 600px; height: 500px;"
+          >
+            <dxi-series valueField="valor" name="Competencias" color="#28a745"></dxi-series>
+          </dx-polar-chart>
+          <div class="valores-lista">
+            <div *ngFor="let comp of radarData" class="valor-item">
+              <span class="comp-nombre">{{ comp.arg }}:</span>
+              <span class="comp-valor">{{ comp.valor }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Contenedor de la información del empleado -->
+      <div class="card detalles-card">
+        <div class="detalles-panel">
+          <div class="empleado-nombre"><b>Empleado:</b> {{ evaluacion.name_Employee }} {{ evaluacion.lastName_Employee }}</div>
+          <div><b>Fecha:</b> {{ evaluacion.evaluation_Date | date:'yyyy-MM-dd' }}</div>
+          <div class="comentarios-panel">
+            <label><b>Comentarios</b></label>
+            <textarea [value]="evaluacion.comments" readonly class="comentarios-area"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!loading && !evaluacion" class="error-msg">
+    No se encontró la evaluación solicitada.
+  </div>
+</div> 

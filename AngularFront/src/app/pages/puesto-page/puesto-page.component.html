@@ -48,4 +48,22 @@
     (onConfirm)="deletePuesto()"
     (onCancel)="closeDeleteModal()"
   ></app-confirmation-modal>
+
+  <!-- Modal de filtros avanzados -->
+  <app-modal
+    [isOpen]="showFilterModal"
+    [title]="'Filtros avanzados'"
+    (onClose)="closeFilterModal()"
+  >
+    <div class="modal-content">
+      <label for="filterId">Código:</label>
+      <input id="filterId" [(ngModel)]="filterId" placeholder="Código del Puesto" />
+      <label for="filterName">Nombre del Puesto:</label>
+      <input id="filterName" [(ngModel)]="filterName" placeholder="Nombre del Puesto" />
+      <div style="margin-top: 18px; display: flex; gap: 12px; justify-content: flex-end;">
+        <button class="btn-add" (click)="applyAdvancedFilter()">Aplicar</button>
+        <button class="btn-cancel" (click)="closeFilterModal()">Cancelar</button>
+      </div>
+    </div>
+  </app-modal>
 </div>

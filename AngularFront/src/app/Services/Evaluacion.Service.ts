@@ -4,11 +4,20 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface Evaluacion {
-  id_Evaluation: number;
-  id_Employee: number;
-  evaluation_Date: string;
-  score: number;
+  id_Evaluation?: number;
+  id_employee: number;
+  evaluation_Date?: string | Date;
+  productivity: number;
+  punctuality: number;
+  work_quality: number;
+  communication: number;
+  willingness_to_learn: number;
+  honesty: number;
+  initiative: number;
+  teamwork: number;
   comments: string;
+  name_Employee?: string;
+  lastName_Employee?: string;
 }
 
 @Injectable({

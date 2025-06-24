@@ -35,7 +35,9 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem('jwtToken');
+    const token = localStorage.getItem('jwtToken');
+    if (!token || token === 'null' || token === 'undefined') return null;
+    return token;
   }
 
   isLoggedIn(): boolean {

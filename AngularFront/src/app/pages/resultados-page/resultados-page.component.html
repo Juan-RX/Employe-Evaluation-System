@@ -1,4 +1,20 @@
 <div class="container">
+  <div *ngIf="selectedEvaluacion" class="resultados-panel">
+    <div class="resultados-info">
+      <app-radar-chart
+        [labels]="radarLabels"
+        [data]="radarData"
+        title="Competencias evaluadas">
+      </app-radar-chart>
+      <div class="detalles-panel">
+        <h2>{{ selectedEvaluacion.name_Employee }} {{ selectedEvaluacion.lastName_Employee }}</h2>
+        <div><b>Fecha:</b> {{ selectedEvaluacion.evaluation_Date | date:'yyyy-MM-dd' }}</div>
+        <div><b>Comentarios:</b></div>
+        <textarea [value]="selectedEvaluacion.comments" readonly style="width:100%; min-height:80px; background:#f4f4f4; border-radius:6px; border:1px solid #ccc; padding:0.5rem;"></textarea>
+      </div>
+    </div>
+  </div>
+
   <div class="header">
     <h1>Formulario de Evaluación de Desempeño</h1>
     <p class="subtitle">Busque un empleado por su ID para comenzar la evaluación.</p>
@@ -12,9 +28,10 @@
           type="text" 
           id="codigo" 
           [formControl]="idEmpleadoControl"
-          placeholder="Ingrese el ID y espere..."
-          [class.loading]="isLoading"
+          placeholder="Ingrese el ID del empleado"
+          [disabled]="isEditMode"
         >
+        <button type="button" class="btn btn-buscar" (click)="buscarEmpleado()" [disabled]="isEditMode || isLoading">Buscar</button>
         <div *ngIf="isLoading" class="spinner"></div>
       </div>
     </div>
@@ -32,6 +49,9 @@
 
   <div *ngIf="errorMensaje" class="error-message">
     <i class="fas fa-exclamation-circle"></i> {{ errorMensaje }}
+  </div>
+  <div *ngIf="empleadoValido && !errorMensaje" class="success-message">
+    <i class="fas fa-check-circle"></i> Empleado encontrado correctamente.
   </div>
 
   <div class="evaluation-form" [class.disabled]="!nombreEmpleado">

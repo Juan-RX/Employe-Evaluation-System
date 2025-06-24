@@ -165,3 +165,71 @@ textarea {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.resultados-panel {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  margin-bottom: 2rem;
+  padding: 2rem 1.5rem;
+}
+
+.resultados-info {
+  display: flex;
+  gap: 2.5rem;
+  align-items: flex-start;
+}
+
+.detalles-panel {
+  flex: 1;
+  min-width: 250px;
+  max-width: 400px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+}
+
+.detalles-panel h2 {
+  margin-top: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.detalles-panel div {
+  margin-bottom: 0.7rem;
+  font-size: 1rem;
+}
+
+.detalles-panel textarea {
+  font-size: 1rem;
+  color: #333;
+  resize: none;
+}
+
+.btn-buscar {
+  margin-left: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-buscar:disabled {
+  background: #a0c7e4;
+  cursor: not-allowed;
+}
+.success-message {
+  margin-bottom: 1.5rem;
+  color: #28a745;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+}

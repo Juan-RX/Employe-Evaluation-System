@@ -47,4 +47,30 @@
     (onConfirm)="deleteEmpleado()"
     (onCancel)="closeDeleteModal()"
   ></app-confirmation-modal>
+
+  <!-- Modal prototipo para ver evaluación -->
+  <app-modal
+    [isOpen]="showEvaluacionModal"
+    [title]="'Resultados de la Evaluación'"
+    (onClose)="closeEvaluacionModal()"
+  >
+    <div *ngIf="selectedEvaluacion">
+      <p><strong>Empleado:</strong> {{ selectedEvaluacion.id_employee }}</p>
+      <p><strong>Fecha:</strong> {{ selectedEvaluacion.evaluation_Date || 'N/A' }}</p>
+      <ul>
+        <li><strong>Productividad:</strong> {{ selectedEvaluacion.productivity }}</li>
+        <li><strong>Puntualidad:</strong> {{ selectedEvaluacion.punctuality }}</li>
+        <li><strong>Calidad:</strong> {{ selectedEvaluacion.work_quality }}</li>
+        <li><strong>Comunicación:</strong> {{ selectedEvaluacion.communication }}</li>
+        <li><strong>Aprender:</strong> {{ selectedEvaluacion.willingness_to_learn }}</li>
+        <li><strong>Honestidad:</strong> {{ selectedEvaluacion.honesty }}</li>
+        <li><strong>Iniciativa:</strong> {{ selectedEvaluacion.initiative }}</li>
+        <li><strong>Equipo:</strong> {{ selectedEvaluacion.teamwork }}</li>
+      </ul>
+      <p><strong>Comentarios:</strong> {{ selectedEvaluacion.comments }}</p>
+    </div>
+    <div *ngIf="!selectedEvaluacion">
+      <p>No hay evaluación disponible para este empleado.</p>
+    </div>
+  </app-modal>
 </div>

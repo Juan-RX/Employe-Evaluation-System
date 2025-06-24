@@ -7,6 +7,7 @@ import { EvaluacionComponent } from './pages/evaluacion/evaluacion.component';
 import { PuestoPageComponent } from './pages/puesto-page/puesto-page.component';
 import { ResultadosPageComponent } from './pages/resultados-page/resultados-page.component';
 import { AuthGuard } from './Services/AuthGuard';
+import { GraphicPageComponent } from './pages/graphic-page/graphic-page.component';
 
 export const routes: Routes = [
   {
@@ -44,6 +45,12 @@ export const routes: Routes = [
   {
     path: 'resultados',
     component: ResultadosPageComponent,
+    canActivate: [AuthGuard]
+  },
+
+  {
+    path: 'graphic-page/:id',
+    component: GraphicPageComponent,
     canActivate: [AuthGuard]
   },
 

@@ -8,6 +8,7 @@ import { ConfirmationModalComponent } from '../../components/confirmation-modal/
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { EvaluacionService, Evaluacion } from '../../Services/Evaluacion.Service';
 
 @Component({
   selector: 'app-evaluacion',
@@ -21,6 +22,7 @@ export class EvaluacionComponent implements OnInit {
   private empleadoService = inject(EmpleadoService);
   private cdr = inject(ChangeDetectorRef);
   private router = inject(Router);
+  private evaluacionService = inject(EvaluacionService);
 
   empleados: Empleado[] = [];
   loading = false;
@@ -33,37 +35,43 @@ export class EvaluacionComponent implements OnInit {
   itemsPerPage = 10;
   pageSizeOptions = [5, 10, 25, 50];
   searchTerm: string = '';
-  filteredEmpleados: Empleado[] = [];
+  filteredEmpleados: any[] = [];
+  evaluaciones: Evaluacion[] = [];
+  empleadosEvaluados: any[] = [];
+  selectedEvaluacion: Evaluacion | null = null;
+  showEvaluacionModal = false;
 
   columns: TableColumn[] = [
-    { key: 'id_Employee', label: 'Código', type: 'text' },
+    { key: 'evaluation_Date', label: 'Fecha Evaluación', type: 'date' },
+    { key: 'id_employee', label: 'Código', type: 'text' },
     { key: 'name_Employee', label: 'Nombre', type: 'text' },
     { key: 'lastName_Employee', label: 'Apellido', type: 'text' },
     { key: 'actions', label: 'Acciones', type: 'actions' }
   ];
 
   actions: TableAction[] = [
+    { icon: 'fas fa-eye', label: 'Ver', action: 'view' },
     { icon: 'fas fa-edit', label: 'Editar', action: 'edit' },
-    { icon: 'fas fa-trash', label: 'Eliminar', action: 'delete' },
-    { icon: 'fas fa-chart-bar', label: 'Evaluar', action: 'evaluate' }
+    { icon: 'fas fa-trash', label: 'Borrar', action: 'delete' }
   ];
 
   ngOnInit(): void {
-    this.loadEmpleados();
+    this.loadEvaluaciones();
   }
 
-  loadEmpleados() {
+  loadEvaluaciones() {
     this.loading = true;
-    this.empleadoService.getAll().subscribe({
+    this.evaluacionService.getAll().subscribe({
       next: (data) => {
-        this.empleados = data;
-        this.applySearch();
+        this.evaluaciones = data;
+        this.empleadosEvaluados = data;
+        this.filteredEmpleados = [...this.empleadosEvaluados];
         this.updatePagination();
         this.loading = false;
         this.cdr.markForCheck();
       },
       error: (error: any) => {
-        console.error('Error cargando empleados:', error);
+        console.error('Error cargando evaluaciones:', error);
         this.loading = false;
         this.cdr.markForCheck();
       }
@@ -108,18 +116,22 @@ export class EvaluacionComponent implements OnInit {
   }
 
   onAction(event: { action: string, item: any }) {
-    const empleado = event.item as Empleado;
+    const evaluacion = event.item;
     switch (event.action) {
+      case 'view':
+        // Navegar a la gráfica de la evaluación seleccionada
+        this.router.navigate(['/graphic-page', evaluacion.id_Evaluation]);
+        break;
       case 'edit':
-        this.selectedEmpleado = empleado;
-        this.showModal = true;
+        // Navegar a la edición de la evaluación seleccionada
+        this.router.navigate(['/resultados'], { queryParams: { id: evaluacion.id_Evaluation } });
         break;
       case 'delete':
-        this.empleadoToDelete = empleado;
-        this.showDeleteModal = true;
-        break;
-      case 'evaluate':
-        this.evaluateEmpleado(empleado);
+        // Eliminar la evaluación seleccionada
+        this.evaluacionService.delete(evaluacion.id_Evaluation!).subscribe({
+          next: () => this.loadEvaluaciones(),
+          error: (err) => console.error('Error eliminando evaluación:', err)
+        });
         break;
     }
   }
@@ -129,7 +141,7 @@ export class EvaluacionComponent implements OnInit {
 
     this.empleadoService.delete(this.empleadoToDelete.id_Employee).subscribe({
       next: () => {
-        this.loadEmpleados();
+        this.loadEvaluaciones();
         this.closeDeleteModal();
       },
       error: (error: any) => {
@@ -144,8 +156,9 @@ export class EvaluacionComponent implements OnInit {
     this.showDeleteModal = false;
   }
 
-  evaluateEmpleado(empleado: Empleado) {
-    // Implementar lógica de evaluación
+  closeEvaluacionModal() {
+    this.selectedEvaluacion = null;
+    this.showEvaluacionModal = false;
   }
 
   onModalClose() {
@@ -158,7 +171,7 @@ export class EvaluacionComponent implements OnInit {
       this.empleadoService.update(empleado).subscribe({
         next: () => {
           this.onModalClose();
-          this.loadEmpleados();
+          this.loadEvaluaciones();
         },
         error: (error: any) => {
           console.error('Error actualizando empleado:', error);
@@ -168,7 +181,7 @@ export class EvaluacionComponent implements OnInit {
       this.empleadoService.insert(empleado).subscribe({
         next: () => {
           this.onModalClose();
-          this.loadEmpleados();
+          this.loadEvaluaciones();
         },
         error: (error: any) => {
           console.error('Error creando empleado:', error);
@@ -189,7 +202,7 @@ export class EvaluacionComponent implements OnInit {
     this.cdr.markForCheck();
   }
 
-  get paginatedEmpleados(): Empleado[] {
+  get paginatedEmpleados(): any[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     return this.filteredEmpleados.slice(startIndex, endIndex);
