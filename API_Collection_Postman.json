@@ -1,0 +1,629 @@
+{
+	"info": {
+		"_postman_id": "examen-api-collection",
+		"name": "Sistema de Evaluación de Empleados - API",
+		"description": "Colección completa de endpoints para el sistema de evaluación de empleados",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Autenticación",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"Juan\",\n  \"userPassword\": \"Juan123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/UserLogin/Login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"UserLogin",
+								"Login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Empleados",
+			"item": [
+				{
+					"name": "GetAll Empleados",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/Employe/GetAll",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Employe",
+								"GetAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById Empleado",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "1"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Employe/GetById",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Employe",
+								"GetById"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insert Empleado",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_Employee\": 0,\n  \"name_Employee\": \"TestName\",\n  \"lastName_Employee\": \"TestLastName\",\n  \"birthDate\": \"1990-01-01\",\n  \"contract_Start_Date\": \"2020-01-01\",\n  \"id_Job\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Employe/Insert",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Employe",
+								"Insert"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Empleado",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_Employee\": 1,\n  \"name_Employee\": \"TestNameUpdated\",\n  \"lastName_Employee\": \"TestLastNameUpdated\",\n  \"birthDate\": \"1990-01-01\",\n  \"contract_Start_Date\": \"2020-01-01\",\n  \"id_Job\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Employe/Update",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Employe",
+								"Update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Empleado",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "1"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Employe/Delete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Employe",
+								"Delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Puestos",
+			"item": [
+				{
+					"name": "GetAll Puestos",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/Job/GetAll",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Job",
+								"GetAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById Puesto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "1"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Job/GetById",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Job",
+								"GetById"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insert Puesto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_Job\": 0,\n  \"name_Job\": \"TestJob\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Job/Insert",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Job",
+								"Insert"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Puesto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_Job\": 1,\n  \"name_Job\": \"TestJobUpdated\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Job/Update",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Job",
+								"Update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Puesto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "1"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Job/Delete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Job",
+								"Delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Evaluaciones",
+			"item": [
+				{
+					"name": "GetAll Evaluaciones",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/Evaluation/GetAll",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Evaluation",
+								"GetAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById Evaluación",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "1"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Evaluation/GetById",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Evaluation",
+								"GetById"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByEmployee Evaluaciones",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "1"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Evaluation/GetByEmployee",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Evaluation",
+								"GetByEmployee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insert Evaluación",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_Evaluation\": 0,\n  \"id_employee\": 1,\n  \"evaluation_Date\": \"2024-01-15\",\n  \"productivity\": 8,\n  \"punctuality\": 9,\n  \"work_quality\": 8,\n  \"communication\": 7,\n  \"willingness_to_learn\": 9,\n  \"honesty\": 10,\n  \"initiative\": 8,\n  \"teamwork\": 9,\n  \"comments\": \"Excelente desempeño\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Evaluation/Insert",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Evaluation",
+								"Insert"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Evaluación",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_Evaluation\": 1,\n  \"id_employee\": 1,\n  \"evaluation_Date\": \"2024-01-15\",\n  \"productivity\": 9,\n  \"punctuality\": 9,\n  \"work_quality\": 8,\n  \"communication\": 8,\n  \"willingness_to_learn\": 9,\n  \"honesty\": 10,\n  \"initiative\": 8,\n  \"teamwork\": 9,\n  \"comments\": \"Excelente desempeño, mejoró en comunicación\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Evaluation/Update",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Evaluation",
+								"Update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Evaluación",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "1"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Evaluation/Delete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Evaluation",
+								"Delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Importación",
+			"item": [
+				{
+					"name": "Import CSV Evaluaciones",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/EvaluationImport/ImportCsv",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"EvaluationImport",
+								"ImportCsv"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5194",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+} 

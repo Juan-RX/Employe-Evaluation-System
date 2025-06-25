@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiBack.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+940e432f6b6564e87500cbba537a0c260e01e014")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b3e79709692007009d0bfcb824418fdb32f85b63")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiBack.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiBack.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

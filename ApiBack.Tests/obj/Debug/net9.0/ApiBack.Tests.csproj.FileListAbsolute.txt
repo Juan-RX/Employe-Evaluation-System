@@ -165,3 +165,4 @@ C:\Users\JuanPabloOrtizMoreno\OneDrive - Nezter Solutions\Escritorio\Examen\ApiB
 C:\Users\JuanPabloOrtizMoreno\OneDrive - Nezter Solutions\Escritorio\Examen\ApiBack.Tests\obj\Debug\net9.0\ApiBack.Tests.pdb
 C:\Users\JuanPabloOrtizMoreno\OneDrive - Nezter Solutions\Escritorio\Examen\ApiBack.Tests\obj\Debug\net9.0\ApiBack.Tests.genruntimeconfig.cache
 C:\Users\JuanPabloOrtizMoreno\OneDrive - Nezter Solutions\Escritorio\Examen\ApiBack.Tests\obj\Debug\net9.0\ref\ApiBack.Tests.dll
+C:\Users\JuanPabloOrtizMoreno\OneDrive - Nezter Solutions\Escritorio\Examen\ApiBack.Tests\bin\Debug\net9.0\Microsoft.Extensions.Configuration.Abstractions.dll
